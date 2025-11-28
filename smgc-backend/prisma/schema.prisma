@@ -1,0 +1,114 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+enum UserRole {
+    USER
+    ADMIN
+}
+
+model User {
+    id        Int       @id @default(autoincrement())
+    email     String    @unique
+    password  String
+    name      String
+    
+    role      UserRole  @default(USER)
+    orders    Order[]
+    logs      Log[]     // 👈 CAMBIO NECESARIO
+
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+}
+
+
+model Log {
+    id        Int       @id @default(autoincrement())
+    type      String
+    message   String
+    userId    Int?
+    user      User?     @relation(fields: [userId], references: [id])
+    metadata  Json?
+    createdAt DateTime  @default(now())
+}
+
+
+model Product {
+    id          Int           @id @default(autoincrement())
+    name        String
+    description String?
+    price       Decimal        @db.Decimal(10, 2)
+    stock       Int
+    imageUrl    String?
+
+    orderItems  OrderItem[]
+
+    createdAt   DateTime       @default(now())
+    updatedAt   DateTime       @updatedAt
+}
+
+model Order {
+    id          Int          @id @default(autoincrement())
+    userId      Int
+
+    user        User         @relation(fields: [userId], references: [id])
+    items       OrderItem[]
+    payment     Payment?
+
+    total       Decimal      @db.Decimal(10, 2)
+    status      OrderStatus  @default(PENDING)
+
+    createdAt   DateTime     @default(now())
+    updatedAt   DateTime     @updatedAt
+}
+
+model OrderItem {
+    id          Int       @id @default(autoincrement())
+    orderId     Int
+    productId   Int
+
+    quantity    Int
+    price       Decimal   @db.Decimal(10, 2)
+
+    order       Order     @relation(fields: [orderId], references: [id])
+    product     Product   @relation(fields: [productId], references: [id])
+}
+
+model Payment {
+    id        Int       @id @default(autoincrement())
+    orderId   Int       @unique
+
+    order     Order     @relation(fields: [orderId], references: [id])
+    method    PaymentMethod
+    status    PaymentStatus
+    amount    Decimal   @db.Decimal(10, 2)
+    paidAt    DateTime?
+
+    createdAt DateTime  @default(now())
+}
+
+enum OrderStatus {
+    PENDING
+    PAID
+    SHIPPED
+    COMPLETED
+    CANCELLED
+}
+
+enum PaymentStatus {
+    PENDING
+    SUCCESS
+    FAILED
+}
+
+enum PaymentMethod {
+    CREDIT_CARD
+    DEBIT_CARD
+    CASH
+    TRANSFER
+    MERCADOPAGO
+}
