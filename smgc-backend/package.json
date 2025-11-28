@@ -8,7 +8,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "prisma:generate": "prisma generate",
-      "build": "npm run prisma:generate && tsc -p tsconfig.build.json",
+    "build": "npm run prisma:generate && tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -20,6 +20,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
+  },
+  "prisma": {
+    "path": "prisma.config.js"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

@@ -19,7 +19,7 @@ model User {
     
     role      UserRole  @default(USER)
     orders    Order[]
-    logs      Log[]     // 👈 CAMBIO NECESARIO
+    logs      Log[]     
 
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
