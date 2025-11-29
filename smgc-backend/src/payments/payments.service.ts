@@ -39,9 +39,10 @@ export class PaymentsService {
                 items,
                 metadata: { orderId: order.id },
                 back_urls: {
-                    success: 'http://localhost:3000/payments/success',
-                    failure: 'http://localhost:3000/payments/failure',
-                },
+                success: "https://google.com",
+                failure: "https://google.com",
+                pending: "https://google.com"
+            },
                 auto_return: 'approved',
 
                 notification_url: 'https://render.com/docs/web-services#port-binding/link.mercadopago.com.co/smgc'
