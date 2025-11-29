@@ -44,7 +44,7 @@ export class PaymentsService {
                 },
                 auto_return: 'approved',
 
-                notification_url: 'link.mercadopago.com.co/smgc'
+                notification_url: 'https://render.com/docs/web-services#port-binding/link.mercadopago.com.co/smgc'
             }
         });
 
